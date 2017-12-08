@@ -25,7 +25,7 @@ app.use(cors(opts))
 
 db.migrate.latest()
 .then(() => {
-  App.init(app, sendMail)
+  App(app, sendMail)
   app.listen(port, function () {
     console.log('gandalf do magic on ' + port)
   })

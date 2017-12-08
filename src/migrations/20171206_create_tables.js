@@ -6,7 +6,6 @@ exports.up = (knex, Promise) => {
       table.string('name', 64).notNullable()
       table.string('email', 64).notNullable()
       table.string('password', 512).notNullable()
-      table.integer('gid').notNullable()
       table.enu('status', ['enabled', 'disabled']).defaultTo('disabled')
       table.timestamp('created').notNullable().defaultTo(knex.fn.now())
       table.unique(['username'])

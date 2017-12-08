@@ -4,19 +4,19 @@ module.exports = (app, isAdmin, g) => {
   //
   const prefix = 'user'
 
-  function _getUsers (req, res, next) {
+  function _getItems (req, res, next) {
     g.models.user.query()
     .select(['id', 'username', 'name', 'status', 'created'])
-    .then(saved => {
-      res.json(saved)
+    .then(found => {
+      res.json(found)
       next()
     })
     .catch(next)
   }
-  app.get(`/${prefix}`, g.authMW, _getUsers)
+  app.get(`/${prefix}`, g.authMW, _getItems)
 
   // --------------------------------------------------------------------------
-  function _getUser (req, res, next) {
+  function _getItem (req, res, next) {
     g.models.user.query().where('id', '=', req.params.id)
     .then(found => {
       if (found.length === 0) {
@@ -27,10 +27,10 @@ module.exports = (app, isAdmin, g) => {
     })
     .catch(next)
   }
-  app.get(`/${prefix}/:id`, g.authMW, _getUser)
+  app.get(`/${prefix}/:id`, g.authMW, _getItem)
 
   // --------------------------------------------------------------------------
-  function _updateUser (req, res, next) {
+  function _updateItem (req, res, next) {
     g.models.user.query().patch(req.body)
     .then(saved => {
       res.json(saved)
@@ -38,7 +38,7 @@ module.exports = (app, isAdmin, g) => {
     })
     .catch(next)
   }
-  app.put(`/${prefix}`, g.authMW, isAdmin, _updateUser)
+  app.put(`/${prefix}`, g.authMW, isAdmin, _updateItem)
 
   // --------------------------------------------------------------------------
   function _getPublicUserInfo (req, res, next) {

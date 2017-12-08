@@ -17,9 +17,10 @@ exports.up = (knex, Promise) => {
       table.unique(['name'])
     }),
     knex.schema.createTable('memberships', (table) => {
-      table.integer('user_id').notNullable().primary()
-      table.integer('group_id').notNullable().primary()
+      table.integer('user_id').notNullable()
+      table.integer('group_id').notNullable()
       table.timestamp('created').notNullable().defaultTo(knex.fn.now())
+      table.primary(['user_id', 'group_id'])
     })
   ])
 }

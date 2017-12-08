@@ -1,24 +1,22 @@
 {
-  "name": "sss-auth",
-  "title": "super simple spa auth app",
+  "name": "open-auth",
+  "title": "pirati auth app",
   "description": "",
   "version": "0.1.0",
   "engines": {
     "node": ">=7.x"
   },
-  "private": false,
   "author": {
     "name": "Vaclav Klecanda <vencax77@gmail.com>"
   },
-  "repository": "https://github.com/vencax/node-sss-auth.git",
-  "homepage": "https://github.com/vencax/node-sss-auth",
+  "repository": "https://github.com/vencax/open-auth.git",
+  "homepage": "https://github.com/vencax/open-auth",
   "keywords": [
     "auth",
     "userman"
   ],
   "license": "MIT",
   "dependencies": {
-    "basic-userman": "vencax/node-basic-userman",
     "body-parser": "^1.14.1",
     "cors": "^2.7.1",
     "dotenv": "^4.0.0",

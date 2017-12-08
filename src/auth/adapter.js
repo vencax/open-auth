@@ -1,9 +1,9 @@
 
-module.exports = (db) => {
+module.exports = (User) => {
   return {
 
     find: (body) => {
-      let q = db.models.user.query()
+      let q = User.query()
       if (body.username) {
         q = q.where('username', '=', body.username)
       }
@@ -17,8 +17,8 @@ module.exports = (db) => {
 
     save: (user) => {
       return (user.id === undefined)
-        ? db.models.user.query().insert(user)
-        : db.models.user.query().patch(user)
+        ? User.query().insert(user)
+        : User.query().patch(user)
     }
   }
 }

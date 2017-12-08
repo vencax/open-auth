@@ -14,7 +14,7 @@ module.exports = function (g) {
       .then((res) => {
         res.should.have.status(201)
         const token = g.sentemails[0].text.match(/sptoken=([^\n]+)/)[1]
-        return r.get(`/register/verify?sptoken=${token}`)
+        return r.get(`/verify?sptoken=${token}`)
       })
       .catch(function (err) {
         expect(err.response).to.redirect

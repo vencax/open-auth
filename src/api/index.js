@@ -1,5 +1,6 @@
 const admins = (process.env.ADMIN || '').split(',').map(i => Number(i))
 const Users = require('./users')
+const Groups = require('./groups')
 
 module.exports = (app, g) => {
   //
@@ -11,6 +12,7 @@ module.exports = (app, g) => {
   }
 
   Users(app, _isAdmin, g)
+  Groups(app, _isAdmin, g)
 
   return app
 }

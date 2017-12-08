@@ -7,10 +7,11 @@ chai.use(chaiHttp)
 const should = chai.should()
 
 process.env.SERVER_SECRET = 'fhdsakjhfkjal'
+process.env.SERVER_SECRET_4_EMAILS = 'fdsfsfefs'
 const rand = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 15)
 process.env.DATABASE_URL = rand + 'test.sqlite'
 process.env.NODE_ENV = 'test'
-process.env.DEFAULT_GID = '1'
+process.env.ADMIN = '1'
 const port = process.env.PORT || 3333
 const g = {
   loggedUser: {

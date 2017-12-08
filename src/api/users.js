@@ -38,7 +38,7 @@ module.exports = (app, isAdmin, g) => {
     })
     .catch(next)
   }
-  app.put(`/${prefix}`, g.authMW, isAdmin, _updateItem)
+  app.put(`/${prefix}`, g.authMW, isAdmin, g.bodyParser, _updateItem)
 
   // --------------------------------------------------------------------------
   function _getPublicUserInfo (req, res, next) {

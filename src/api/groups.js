@@ -30,25 +30,25 @@ module.exports = (app, isAdmin, g) => {
 
   // --------------------------------------------------------------------------
   function _createItem (req, res, next) {
-    g.models.user.query().create(req.body)
+    g.models.group.query().insert(req.body)
     .then(saved => {
-      res.json(saved)
+      res.status(201).json(saved)
       next()
     })
     .catch(next)
   }
-  app.post(`/${prefix}`, g.authMW, isAdmin, _createItem)
+  app.post(`/${prefix}`, g.authMW, isAdmin, g.bodyParser, _createItem)
 
   // --------------------------------------------------------------------------
   function _updateItem (req, res, next) {
-    g.models.user.query().patch(req.body)
+    g.models.group.query().patch(req.body)
     .then(saved => {
       res.json(saved)
       next()
     })
     .catch(next)
   }
-  app.put(`/${prefix}`, g.authMW, isAdmin, _updateItem)
+  app.put(`/${prefix}`, g.authMW, isAdmin, g.bodyParser, _updateItem)
 
   return app
 }

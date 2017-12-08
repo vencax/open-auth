@@ -1,7 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const expressJwt = require('express-jwt')
 const db = require('./db')
-const UserApi = require('./userapi')
+const UserApi = require('./api')
 const Auth = require('./auth')
 
 function _createError (message, status) {
@@ -9,7 +10,7 @@ function _createError (message, status) {
 }
 
 const g = {
-  // authMW: expressJwt({secret: process.env.SERVER_SECRET}),
+  authMW: expressJwt({secret: process.env.SERVER_SECRET}),
   createError: _createError,
   models: db.models,
   startTransaction: db.startTransaction,
@@ -21,7 +22,7 @@ module.exports = (app, sendMail) => {
   Auth(app, sendMail, g)
 
   const api = express()
-  app.use('/users', UserApi(api, g))
+  app.use('/api', UserApi(api, g))
 
   function _generalErrorHandler (err, req, res, next) {
     res.status(err.status || 400).send(err.message || err)
@@ -31,5 +32,11 @@ module.exports = (app, sendMail) => {
       console.log('---------------------------------------------------------')
     }
   }
-  app.use(_generalErrorHandler)
+  function _authErrorHandler (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+      return res.status(err.status).send(err.message)
+    }
+    next(err)
+  }
+  app.use(_authErrorHandler, _generalErrorHandler)
 }

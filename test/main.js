@@ -60,7 +60,8 @@ describe('app', () => {
   })
 
   const submodules = [
-    './register'
+    './register',
+    './api'
   ]
   submodules.map((i) => {
     const subMod = require(i)

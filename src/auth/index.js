@@ -3,7 +3,7 @@ const Adapter = require('./adapter')
 
 module.exports = (app, sendMail, g) => {
   //
-  const adapter = g.manip = Adapter(g.models.user)
+  const adapter = g.manip = Adapter(g.models.user, g.models.membership)
 
   const auth = SPAAuth(adapter, sendMail, g.createError)
 

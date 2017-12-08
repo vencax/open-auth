@@ -1,4 +1,5 @@
 const admins = (process.env.ADMIN || '').split(',').map(i => Number(i))
+const Users = require('./users')
 
 module.exports = (app, g) => {
   //
@@ -9,40 +10,7 @@ module.exports = (app, g) => {
     next()
   }
 
-  // --------------------------------------------------------------------------
-  function _getUsers (req, res, next) {
-    g.models.user.query()
-    .then(saved => {
-      res.json(saved)
-      next()
-    })
-    .catch(next)
-  }
-  app.get('/', g.authMW, _getUsers)
-
-  // --------------------------------------------------------------------------
-  function _updateUser (req, res, next) {
-    g.models.user.query().patch(req.body)
-    .then(saved => {
-      res.json(saved)
-      next()
-    })
-    .catch(next)
-  }
-  app.put('/', g.authMW, _isAdmin, _updateUser)
-
-  // --------------------------------------------------------------------------
-  function _getPublicUserInfo (req, res, next) {
-    g.models.user.query()
-    .select('id', 'username', 'name')
-    .where('id', 'in', req.params.ids.split(','))
-    .then(found => {
-      res.json(found)
-      next()
-    })
-    .catch(next)
-  }
-  app.get('/info/:ids', _getPublicUserInfo)
+  Users(app, _isAdmin, g)
 
   return app
 }

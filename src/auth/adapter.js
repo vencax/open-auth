@@ -1,5 +1,5 @@
 
-module.exports = (User) => {
+module.exports = (User, Memberhip) => {
   return {
 
     find: (body) => {
@@ -19,6 +19,16 @@ module.exports = (User) => {
       return (user.id === undefined)
         ? User.query().insert(user)
         : User.query().patch(user)
+    },
+
+    retrieveAditionalUserinfo: (user) => {
+      // retrieve user's groups
+      return Memberhip.query()
+        .select('group_id')
+        .where('user_id', '=', user.id)
+        .then(memberships => {
+          return Object.assign(user, {groups: memberships})
+        })
     }
   }
 }

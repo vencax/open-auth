@@ -43,7 +43,7 @@ module.exports = (app, isAdmin, g) => {
   // --------------------------------------------------------------------------
   function _getPublicUserInfo (req, res, next) {
     g.models.user.query()
-    .select('id', 'username', 'name')
+    .select('id', 'username', 'name', 'email')
     .where('id', 'in', req.params.ids.split(','))
     .orderBy('name', 'desc')
     .then(found => {

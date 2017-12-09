@@ -13,7 +13,7 @@ module.exports = function (g) {
       return r.get('/api/user/info/1')
       .then((res) => {
         res.body.length.should.eql(1)
-        Object.keys(res.body[0]).should.eql(['id', 'username', 'name'])
+        Object.keys(res.body[0]).should.eql(['id', 'username', 'name', 'email'])
         res.should.have.status(200)
       })
     })

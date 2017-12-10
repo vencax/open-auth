@@ -18,7 +18,7 @@ module.exports = (User, Memberhip) => {
     save: (user) => {
       return (user.id === undefined)
         ? User.query().insert(user)
-        : User.query().patch(user)
+        : User.query().patch(user).where('id', user.id)
     },
 
     retrieveAditionalUserinfo: (user) => {

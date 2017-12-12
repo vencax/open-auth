@@ -13,4 +13,5 @@ module.exports = (app, sendMail, g) => {
   app.get('/verify', auth.registration.verify)
   app.put('/setpasswd', g.bodyParser, auth.registration.setpasswd)
   app.put('/forgotten', g.bodyParser, auth.registration.requestforgotten)
+  app.put('/resendverification', g.bodyParser, auth.registration.resendverification)
 }

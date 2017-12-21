@@ -74,5 +74,17 @@ module.exports = function (g) {
         done()
       })
     })
+
+    it('should list users within desired group', () => {
+      return g.db.models.membership.query().insert({user_id: 1, group_id: group1.id})
+      .then(() => {
+        const url = `/api/group/${group1.id}/members?attrs=name,email`
+        return r.get(url).set('Authorization', g.authHeader)
+      })
+      .then((res) => {
+        console.log(res.body)
+        res.should.have.status(200)
+      })
+    })
   })
 }

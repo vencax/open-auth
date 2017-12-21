@@ -1,3 +1,13 @@
+const _ = require('underscore')
+
+function _listAttrs (req, qb) {
+  let attrs = ['id', 'username', 'name', 'email', 'status', 'created']
+  if (req.query.attrs) {
+    const wanted = req.query.attrs.split(',')
+    attrs = _.filter(attrs, i => wanted.indexOf(i) >= 0)
+  }
+  return qb.select(attrs)
+}
 
 module.exports = (app, isAdmin, g) => {
   //
@@ -27,6 +37,20 @@ module.exports = (app, isAdmin, g) => {
     .catch(next)
   }
   app.get(`/${prefix}/:id`, g.authMW, _getItem)
+
+  // --------------------------------------------------------------------------
+  function _listMembers (req, res, next) {
+    const ids = g.models.membership.query().select(['user_id'])
+      .where('group_id', '=', req.params.id)
+    let q = g.models.user.query().where('id', 'in', ids)
+    q = _listAttrs(req, q)
+    q.then(found => {
+      res.json(found)
+      next()
+    })
+    .catch(next)
+  }
+  app.get(`/${prefix}/:id/members`, g.authMW, _listMembers)
 
   // --------------------------------------------------------------------------
   function _createItem (req, res, next) {

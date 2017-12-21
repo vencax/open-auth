@@ -1,13 +1,22 @@
 const _ = require('underscore')
 
+function _listAttrs (req, qb) {
+  let attrs = ['id', 'username', 'name', 'email', 'status', 'created']
+  if (req.query.attrs) {
+    const wanted = req.query.attrs.split(',')
+    attrs = _.filter(attrs, i => wanted.indexOf(i) >= 0)
+  }
+  return qb.select(attrs)
+}
+
 module.exports = (app, isAdmin, g) => {
   //
   const prefix = 'user'
 
   function _getItems (req, res, next) {
-    g.models.user.query()
-    .select(['id', 'username', 'name', 'status', 'created'])
-    .then(found => {
+    let q = g.models.user.query()
+    q = _listAttrs(req, q)
+    q.then(found => {
       res.json(found)
       next()
     })

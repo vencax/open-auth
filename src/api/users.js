@@ -1,7 +1,10 @@
 const _ = require('underscore')
 
 function _listAttrs (req, qb) {
-  let attrs = ['id', 'username', 'name', 'email', 'status', 'created']
+  let attrs = [
+    'id', 'username', 'name', 'email', 'status', 'created',
+    'rank', 'phone', 'canhelp', 'psc', 'area'
+  ]
   if (req.query.attrs) {
     const wanted = req.query.attrs.split(',')
     attrs = _.filter(attrs, i => wanted.indexOf(i) >= 0)

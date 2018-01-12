@@ -23,7 +23,7 @@ module.exports = (app, sendMail, g) => {
 
   function _registerAtWeb (req, res, next) {
     Object.assign(req.body, {
-      username: req.body.email.split('@')[0].substring(15),
+      username: req.body.email.split('@')[0].substring(0, 15),
       password: ''
     })
     return adapter.save(req.body)

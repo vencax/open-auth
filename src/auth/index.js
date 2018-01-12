@@ -33,7 +33,7 @@ module.exports = (app, sendMail, g) => {
         from: process.env.WELCOME_EMAIL_USER,
         to: user.email,
         subject: process.env.WELCOME_EMAIL_SUBJECT,
-        text: process.env.WELCOME_EMAIL.replace('\\n', '\n')
+        text: process.env.WELCOME_EMAIL.replace(/\\\\n/g, '\n')
       })
     })
     .catch(next)

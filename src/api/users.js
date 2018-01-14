@@ -1,4 +1,5 @@
 const _ = require('underscore')
+const Kalamata = require('kalamata')
 
 function _listAttrs (req, qb) {
   let attrs = [
@@ -15,17 +16,10 @@ function _listAttrs (req, qb) {
 module.exports = (app, isAdmin, g) => {
   //
   const prefix = 'user'
+  const mWarez = Kalamata(g.models.user, g)
 
-  function _getItems (req, res, next) {
-    let q = g.models.user.query()
-    q = _listAttrs(req, q)
-    q.then(found => {
-      res.json(found)
-      next()
-    })
-    .catch(next)
-  }
-  app.get(`/${prefix}`, g.authMW, _getItems)
+  app.get(`/${prefix}`, g.authMW,
+    mWarez.paging_q, mWarez.sorting_q, mWarez.attrs_q, mWarez.list)
 
   // --------------------------------------------------------------------------
   function _getItem (req, res, next) {
@@ -39,18 +33,12 @@ module.exports = (app, isAdmin, g) => {
     })
     .catch(next)
   }
-  app.get(`/${prefix}/:id`, g.authMW, _getItem)
+  app.get(`/${prefix}/:id`, g.authMW, mWarez.fetch, mWarez.detail)
 
   // --------------------------------------------------------------------------
-  function _updateItem (req, res, next) {
-    g.models.user.query().patch(req.body)
-    .then(saved => {
-      res.json(saved)
-      next()
-    })
-    .catch(next)
-  }
-  app.put(`/${prefix}`, g.authMW, isAdmin, g.bodyParser, _updateItem)
+
+  app.put(`/${prefix}`, g.authMW, isAdmin, g.bodyParser,
+    mWarez.fetch, mWarez.update)
 
   // --------------------------------------------------------------------------
   function _getPublicUserInfo (req, res, next) {

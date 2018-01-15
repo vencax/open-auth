@@ -1,5 +1,6 @@
 const SPAAuth = require('spa-auth')
 const Adapter = require('./adapter')
+const AreaResolver = require('../tools/arearesolver')
 
 module.exports = (app, sendMail, g) => {
   //
@@ -24,7 +25,8 @@ module.exports = (app, sendMail, g) => {
   function _registerAtWeb (req, res, next) {
     Object.assign(req.body, {
       username: req.body.email.split('@')[0].substring(0, 15),
-      password: ''
+      password: '',
+      area: AreaResolver.getArea(req.body.psc)
     })
     return adapter.save(req.body)
     .then(user => {
